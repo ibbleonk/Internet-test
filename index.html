@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speed Test</title>
+    <title>Loading...</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
         h1 { color: #333; }
@@ -15,8 +15,9 @@
     <script>
         const img = new Image();
         const timeout = setTimeout(() => {
-            document.body.innerHTML = "<h1>Too Slow!</h1><p>Your internet is not fast enough.</p>";
-        }, 2000); // 2-second limit
+            document.open(); // Wipes the page completely
+            document.close(); // Leaves it blank
+        }, 2000); // 2-second timeout
 
         img.onload = () => {
             clearTimeout(timeout);
@@ -24,7 +25,8 @@
         };
 
         img.onerror = () => {
-            document.body.innerHTML = "<h1>Failed to Load</h1><p>Check your connection.</p>";
+            document.open();
+            document.close();
         };
 
         img.src = "https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg"; // ~5MB image
