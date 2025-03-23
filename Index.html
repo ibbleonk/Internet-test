@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Check</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        h1 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>Checking Your Internet Speed...</h1>
+    <p>If your speed is 5 Mbps or higher, this page will load.</p>
+
+    <script>
+        async function checkSpeed() {
+            const startTime = Date.now();
+            const image = new Image();
+            image.src = "https://via.placeholder.com/1000x1000?" + startTime; // Use a small file to test
+            image.onload = function () {
+                const endTime = Date.now();
+                const duration = (endTime - startTime) / 1000; // Time in seconds
+                const speedMbps = (8 / duration); // Approximate Mbps (assumes 1MB image)
+
+                if (speedMbps < 5) {
+                    document.body.innerHTML = "<h1>Insufficient speed! 5 Mbps required.</h1>";
+                } else {
+                    document.body.innerHTML = "<h1>Welcome! Your speed is sufficient.</h1>";
+                }
+            };
+        }
+
+        checkSpeed();
+    </script>
+</body>
+</html>
