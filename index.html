@@ -14,14 +14,21 @@
 
     <script>
         const img = new Image();
+        const startTime = performance.now();
+        
         const timeout = setTimeout(() => {
-            document.open(); // Wipes the page completely
-            document.close(); // Leaves it blank
-        }, 2000); // 2-second timeout
+            document.open(); // Wipe the page (acts like a crash)
+            document.close();
+        }, 800); // Fail if the image doesn’t load in 0.8 seconds (~100 Mbps speed required)
 
         img.onload = () => {
             clearTimeout(timeout);
-            document.body.innerHTML = "<h1>Success!</h1><p>Your internet is fast enough.</p>";
+            const endTime = performance.now();
+            const duration = (endTime - startTime) / 1000; // Time in seconds
+            const fileSize = 20 * 8; // 20MB in Megabits (1MB = 8 Megabits)
+            const speedMbps = (fileSize / duration).toFixed(2); // Mbps calculation
+
+            document.body.innerHTML = `<h1>Speed Test Result</h1><p>Your speed: ${speedMbps} Mbps</p>`;
         };
 
         img.onerror = () => {
@@ -29,7 +36,7 @@
             document.close();
         };
 
-        img.src = "https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg"; // ~5MB image
+        img.src = "https://speed.hetzner.de/20MB.bin"; // 20MB test file
     </script>
 </body>
 </html>
