@@ -3,40 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speed Check - 1080p Test</title>
+    <title>Speed Test</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
         h1 { color: #333; }
-        .loading { font-size: 18px; color: gray; }
     </style>
 </head>
 <body>
-    <h1>Checking Your Internet Speed...</h1>
-    <p class="loading">Attempting to load a 1080p video stream...</p>
-
-    <video id="testVideo" width="640" height="360" preload="auto" muted>
-        <source src="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <h1>Checking Speed...</h1>
 
     <script>
-        const video = document.getElementById("testVideo");
-        let timeout = setTimeout(() => {
-            document.body.innerHTML = "<h1>Insufficient Speed!</h1><p>Your connection is too slow for 1080p streaming.</p>";
-        }, 3000); // Fail if video doesn’t start in 3 seconds
+        const img = new Image();
+        const timeout = setTimeout(() => {
+            document.body.innerHTML = "<h1>Too Slow!</h1><p>Your internet is not fast enough.</p>";
+        }, 2000); // 2-second limit
 
-        video.onplaying = () => {
+        img.onload = () => {
             clearTimeout(timeout);
-            document.body.innerHTML = "<h1>Success! Your speed is sufficient.</h1><p>You can browse freely.</p>";
+            document.body.innerHTML = "<h1>Success!</h1><p>Your internet is fast enough.</p>";
         };
 
-        video.onerror = () => {
-            document.body.innerHTML = "<h1>Error!</h1><p>Failed to load video. Slow connection detected.</p>";
+        img.onerror = () => {
+            document.body.innerHTML = "<h1>Failed to Load</h1><p>Check your connection.</p>";
         };
 
-        video.play().catch(() => {
-            document.body.innerHTML = "<h1>Playback Error</h1><p>Your connection might be too slow.</p>";
-        });
+        img.src = "https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg"; // ~5MB image
     </script>
 </body>
 </html>
