@@ -11,7 +11,7 @@
 </head>
 <body>
     <h1>Checking Your Internet Speed...</h1>
-    <p>If your speed is 30 Mbps or higher, this page will load.</p>
+    <p>If your speed is 100 Mbps or higher, this page will load.</p>
 
     <script>
         async function checkSpeed() {
@@ -23,7 +23,7 @@
                 const duration = (endTime - startTime) / 1000; // Time in seconds
                 const speedMbps = (8 / duration); // Approximate Mbps (assumes 1MB image)
 
-                if (speedMbps < 30) {
+                if (speedMbps < 100) {
                     document.body.innerHTML = "<h1>Insufficient speed! 5 Mbps required.</h1>";
                 } else {
                     document.body.innerHTML = "<h1>Welcome! Your speed is sufficient.</h1>";
