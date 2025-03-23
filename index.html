@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speed Check</title>
+    <title>Speed Check - 1080p Test</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
         h1 { color: #333; }
@@ -12,34 +12,31 @@
 </head>
 <body>
     <h1>Checking Your Internet Speed...</h1>
-    <p class="loading">Please wait a few seconds.</p>
+    <p class="loading">Attempting to load a 1080p video stream...</p>
+
+    <video id="testVideo" width="640" height="360" preload="auto" muted>
+        <source src="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 
     <script>
-        async function checkSpeed() {
-            const testUrl = "https://speed.hetzner.de/10MB.bin"; // 10MB test file for better accuracy
-            const fileSize = 10 * 8; // 10MB in Megabits (1MB = 8 Megabits)
+        const video = document.getElementById("testVideo");
+        let timeout = setTimeout(() => {
+            document.body.innerHTML = "<h1>Insufficient Speed!</h1><p>Your connection is too slow for 1080p streaming.</p>";
+        }, 3000); // Fail if video doesn’t start in 3 seconds
 
-            const startTime = performance.now();
-            try {
-                const response = await fetch(testUrl, { method: "GET", cache: "no-cache" });
-                if (!response.ok) throw new Error("Failed to download test file.");
-                await response.blob(); // Ensure file is fully downloaded
-                const endTime = performance.now();
+        video.onplaying = () => {
+            clearTimeout(timeout);
+            document.body.innerHTML = "<h1>Success! Your speed is sufficient.</h1><p>You can browse freely.</p>";
+        };
 
-                const duration = (endTime - startTime) / 1000; // Time in seconds
-                const speedMbps = (fileSize / duration).toFixed(2); // Mbps calculation
+        video.onerror = () => {
+            document.body.innerHTML = "<h1>Error!</h1><p>Failed to load video. Slow connection detected.</p>";
+        };
 
-                if (speedMbps < 100) {
-                    document.body.innerHTML = `<h1>Insufficient Speed!</h1><p>Your speed: ${speedMbps} Mbps (100 Mbps required)</p>`;
-                } else {
-                    document.body.innerHTML = `<h1>Success! You have sufficient speed.</h1><p>Your speed: ${speedMbps} Mbps</p>`;
-                }
-            } catch (error) {
-                document.body.innerHTML = `<h1>Error!</h1><p>Could not test speed. Please try again.</p>`;
-            }
-        }
-
-        checkSpeed();
+        video.play().catch(() => {
+            document.body.innerHTML = "<h1>Playback Error</h1><p>Your connection might be too slow.</p>";
+        });
     </script>
 </body>
 </html>
