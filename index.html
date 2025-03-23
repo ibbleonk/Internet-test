@@ -3,40 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title>
+    <title>Speed Test</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        h1 { color: #333; }
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
     </style>
 </head>
 <body>
-    <h1>Checking Speed...</h1>
+    <h1>Checking Your Speed...</h1>
+    <p>Please wait while we measure your connection speed.</p>
 
     <script>
+        const speedThreshold = 100; // Change this to 10, 50, 100, or 150 Mbps
+
         const img = new Image();
-        const startTime = performance.now();
-        
+        const fileSizeMB = 5; // Size of test image in MB
+        const timeLimit = (fileSizeMB * 8) / speedThreshold * 1000; // Convert speed to milliseconds
+
         const timeout = setTimeout(() => {
-            document.open(); // Wipe the page (acts like a crash)
-            document.close();
-        }, 800); // Fail if the image doesn’t load in 0.8 seconds (~100 Mbps speed required)
+            document.body.innerHTML = "<h1>Slow Connection</h1><p>Your speed is too low.</p>";
+        }, timeLimit); 
 
         img.onload = () => {
             clearTimeout(timeout);
-            const endTime = performance.now();
-            const duration = (endTime - startTime) / 1000; // Time in seconds
-            const fileSize = 20 * 8; // 20MB in Megabits (1MB = 8 Megabits)
-            const speedMbps = (fileSize / duration).toFixed(2); // Mbps calculation
-
-            document.body.innerHTML = `<h1>Speed Test Result</h1><p>Your speed: ${speedMbps} Mbps</p>`;
+            document.body.innerHTML = ""; // Fast enough → page goes blank
         };
 
-        img.onerror = () => {
-            document.open();
-            document.close();
-        };
-
-        img.src = "https://speed.hetzner.de/20MB.bin"; // 20MB test file
+        img.src = "https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg"; // 5MB test image
     </script>
 </body>
 </html>
